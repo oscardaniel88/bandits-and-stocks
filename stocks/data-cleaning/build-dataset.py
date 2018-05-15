@@ -2,16 +2,16 @@ import os
 from datetime import date, timedelta
 from time import strftime
 
-directory = 'random-stocks'
-startDate = date(2008, 9, 22)
-endDate = date(2013, 9, 18)
-outputFilename = 'random-stocks.csv'
+directory = 'new-stocks'
+startDate = date(2014, 1, 2)
+endDate = date(2018, 5, 15)
+outputFilename = 'new-stocks.csv'
 
 def daterange(startDate, endDate):
    for n in range(int((endDate - startDate).days)):
-      theDate = startDate + timedelta(n)
+      theDate = endDate - timedelta(n)
       weekday = int(theDate.strftime("%w"))
-      if weekday % 6 == 0: # skip weekends
+      if weekday % 6 == 0: # no tomamos en cuenta fines de semana
          continue
 
       yield theDate.strftime("%d").lstrip('0') + theDate.strftime("-%b-%y")
@@ -37,19 +37,19 @@ for filename in os.listdir(directory):
       (date, openPrice, highPrice, lowPrice, closePrice, volume) = line.split(',')
       if int(volume) == 0:
          cp = float(closePrice)
-         lines[i] = (date, cp, cp, cp, cp, 0) # in some records, open, high, low given by - for volume 0 entries
+         lines[i] = (date, cp, cp, cp, cp, 0)
       else:
          lines[i] = (date, float(openPrice), float(highPrice), float(lowPrice), float(closePrice), int(volume))
 
-   print("%d total entries" % len(lines))
-   print("%d days with zero volume." % (len([x for x in lines if x[-1] == 0])))
+   print("%d total entradas" % len(lines))
+   print("%d dias con volumen cero." % (len([x for x in lines if x[-1] == 0])))
 
    print("")
 
    stocks[tickerSymbol] = lines
 
 
-# align stocks so they're in one table organized by date.
+# Alineamos las acciones en una sola tabla indexada por fecha
 counters = [0] * len(stocks)
 maxNumEntries = max(len(stocks[k]) for k in stocks) # 1271
 newTable = []
@@ -70,7 +70,7 @@ for theDate in daterange(startDate, endDate):
          newRow.append(stockRow[4])
          counters[i] += 1
       else:
-         print("Missing entry: %r" % ((stockRow, theDate, ticker),))
+         print("Entrada faltante: %r" % ((stockRow, theDate, ticker),))
          newRow.append(newTable[-1][column])
          newRow.append(newTable[-1][column+1])
          numMissing += 1
@@ -80,7 +80,7 @@ for theDate in daterange(startDate, endDate):
    newTable.append(newRow)
 
 
-print("num missing: %d" % numMissing)
+print("filas faltantes: %d" % numMissing)
 headerRow = ['Date'] + flatten([[ticker + '-open', ticker + '-close'] for ticker in symbols])
 newTable = [headerRow] + newTable
 

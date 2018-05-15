@@ -61,18 +61,11 @@ def bestGamma(table):
 
 
 if __name__ == "__main__":
-   table = readInStockTable('stocks/fortune-500.csv')
+
+   table = readInStockTable('stocks/new-stocks.csv')
    gamma = .33
-   # print("Gamma used: %.2f, best gamma is %.2f" % (gamma, bestGamma(table)))
+   print("Gamma used: %.2f, best gamma is %.2f" % (gamma, bestGamma(table)))
    runExperiment(table, gamma)
-   # payoffGraph(table, list(sorted(table.keys())), cumulative=True)
-
-   print()
-
-   table2 = readInStockTable('stocks/random-stocks.csv')
-   gamma = .33
-   # print("Gamma used: %.2f, best gamma is %.2f" % (gamma, bestGamma(table2)))
-   runExperiment(table2, gamma)
-   # payoffGraph(table2, list(sorted(table2.keys())), cumulative=True)
+   payoffGraph(table, list(sorted(table.keys())), cumulative=True)
 
    #print(weightsStats(table2, 0.33))

@@ -28,7 +28,6 @@ def readInStockTable(filename):
    for singleStockHistory in preDictTable:
       ticker = singleStockHistory[0][0].split('-')[0]
       stockHistoryDict[ticker] = singleStockHistory[1:]
-
    return stockHistoryDict
 
 
@@ -74,4 +73,3 @@ def payoffGraph(table, tickers, cumulative=True):
 
    plt.legend()
    plt.show()
-
